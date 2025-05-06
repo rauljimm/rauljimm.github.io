@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Barauto | Raúl Jiménez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/restaurant-details.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-icon">⬅️</span>
+                    <span class="logo-text">Raúl Jiménez</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="#overview">Resumen</a>
+                <a href="#backend">Backend</a>
+                <a href="#frontend">Frontend</a>
+                <a href="#features">Características</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero project-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="animate-item">Sistema de Gestión para Restaurantes</h1>
+                <p class="subtitle animate-item">Una solución completa con backend en FastAPI y frontend en Kotlin para Android</p>
+                <div class="buttons animate-item">
+                    <a href="https://github.com/rauljimm/FastAPI-Restaurant-Server" target="_blank" class="button primary">Backend en GitHub</a>
+                    <a href="https://github.com/rauljimm/FrontEnd-Restaurant-App" target="_blank" class="button secondary">Frontend en GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section">
+        <div class="container">
+            <h2 class="section-title animate-item">Resumen del Proyecto</h2>
+            <div class="project-overview animate-item">
+                <p>Este proyecto es una solución integral para la gestión de restaurantes que permite administrar mesas, pedidos, reservas y usuarios con diferentes roles. Está diseñado para optimizar las operaciones diarias de un restaurante y mejorar la comunicación entre el personal.</p>
+                
+                <div class="overview-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Componentes</div>
+                        <div class="stat-detail">Backend + App</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Roles de Usuario</div>
+                        <div class="stat-detail">Admin, Camarero, Cocinero</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">Real-time</div>
+                        <div class="stat-label">Comunicación</div>
+                        <div class="stat-detail">WebSockets</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="section light-section">
+        <div class="container">
+            <h2 class="section-title animate-item">Arquitectura</h2>
+            <div class="architecture-diagram animate-item">
+                <div class="arch-component backend-component">
+                    <h3>Backend (Python/FastAPI)</h3>
+                    <ul>
+                        <li>API RESTful</li>
+                        <li>WebSockets</li>
+                        <li>JWT Auth</li>
+                        <li>SQLAlchemy ORM</li>
+                    </ul>
+                </div>
+                <div class="arch-arrow"></div>
+                <div class="arch-component db-component">
+                    <h3>Base de Datos</h3>
+                    <ul>
+                        <li>PostgreSQL</li>
+                        <li>Modelos relacionales</li>
+                        <li>Índices optimizados</li>
+                    </ul>
+                </div>
+                <div class="arch-arrow"></div>
+                <div class="arch-component app-component">
+                    <h3>App Android (Kotlin)</h3>
+                    <ul>
+                        <li>MVVM</li>
+                        <li>Retrofit</li>
+                        <li>LiveData</li>
+                        <li>Coroutines</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Backend Section -->
+    <section id="backend" class="section dark">
+        <div class="container">
+            <h2 class="section-title animate-item">Backend con FastAPI</h2>
+            <div class="backend-content">
+                <div class="backend-info animate-item">
+                    <p>El backend está desarrollado con FastAPI, un moderno framework de Python que permite crear APIs RESTful de forma rápida y eficiente. Ofrece un rendimiento excepcional gracias a su diseño asíncrono y está optimizado para manejar múltiples conexiones simultáneas.</p>
+                    
+                    <div class="features-list">
+                        <h3>Características principales:</h3>
+                        <ul>
+                            <li>Autenticación JWT con roles de usuario</li>
+                            <li>WebSockets para notificaciones en tiempo real</li>
+                            <li>Validación automática de datos con Pydantic</li>
+                            <li>Documentación automática con Swagger/OpenAPI</li>
+                            <li>ORM con SQLAlchemy para interacción con la base de datos</li>
+                            <li>Sistema de rutas modular y organizado</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="code-samples animate-item">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                            <span class="window-title">pedidos.py</span>
+                        </div>
+                        <div class="window-content">
+                            <pre><code>@router.post("/", response_model=PedidoSchema)
+async def crear_pedido(
+    pedido: PedidoCreate,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)
+):
+    """Crea un nuevo pedido"""
+    if current_user.rol not in ["admin", "camarero"]:
+        raise HTTPException(
+            status_code=403, 
+            detail="Sin permiso para crear pedidos"
+        )
+    
+    # Verificar si la mesa existe
+    mesa = db.query(Mesa).filter(
+        Mesa.id == pedido.mesa_id
+    ).first()
+    if not mesa:
+        raise HTTPException(
+            status_code=404,
+            detail="Mesa no encontrada"
+        )
+    
+    # Crear pedido en la base de datos
+    db_pedido = Pedido(**pedido.dict(), 
+                       usuario_id=current_user.id)
+    db.add(db_pedido)
+    db.commit()
+    db.refresh(db_pedido)
+    
+    # Notificar a los clientes conectados
+    await notificar_nuevo_pedido(db_pedido)
+    
+    return db_pedido</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Frontend Section -->
+    <section id="frontend" class="section">
+        <div class="container">
+            <h2 class="section-title animate-item">Frontend para Android</h2>
+            <div class="frontend-content">
+                <div class="frontend-visuals animate-item">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="app-interface">
+                                <div class="app-header"></div>
+                                <div class="app-content">
+                                    <div class="table-grid">
+                                        <div class="table-item occupied"></div>
+                                        <div class="table-item free"></div>
+                                        <div class="table-item reserved"></div>
+                                        <div class="table-item free"></div>
+                                    </div>
+                                </div>
+                                <div class="app-nav"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="frontend-info animate-item">
+                    <p>La aplicación para Android está desarrollada en Kotlin siguiendo la arquitectura MVVM (Model-View-ViewModel) para mantener una clara separación de responsabilidades y facilitar las pruebas. Utiliza las últimas bibliotecas y patrones recomendados por Google.</p>
+                    
+                    <div class="features-list">
+                        <h3>Características principales:</h3>
+                        <ul>
+                            <li>Material Design con soporte para tema claro/oscuro</li>
+                            <li>LiveData y ViewModel para gestión de estados</li>
+                            <li>Coroutines para operaciones asíncronas</li>
+                            <li>Retrofit para llamadas a la API</li>
+                            <li>WebSocket para recibir actualizaciones en tiempo real</li>
+                            <li>Room Database para almacenamiento local</li>
+                            <li>Diferentes vistas según el rol del usuario</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section dark">
+        <div class="container">
+            <h2 class="section-title animate-item">Características Principales</h2>
+            <div class="features-grid">
+                <div class="feature-card animate-item">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Autenticación Segura</h3>
+                    <p>Sistema basado en JWT con roles que determinan qué acciones puede realizar cada usuario.</p>
+                </div>
+                <div class="feature-card animate-item">
+                    <div class="feature-icon">🪑</div>
+                    <h3>Gestión de Mesas</h3>
+                    <p>Control visual del estado de las mesas con actualizaciones en tiempo real (libre, ocupada, reservada).</p>
+                </div>
+                <div class="feature-card animate-item">
+                    <div class="feature-icon">📝</div>
+                    <h3>Gestión de Pedidos</h3>
+                    <p>Creación y seguimiento de pedidos con notificaciones instantáneas entre sala y cocina.</p>
+                </div>
+                <div class="feature-card animate-item">
+                    <div class="feature-icon">📅</div>
+                    <h3>Sistema de Reservas</h3>
+                    <p>Gestión completa de reservas con confirmación, cancelación y recordatorios.</p>
+                </div>
+                <div class="feature-card animate-item">
+                    <div class="feature-icon">📱</div>
+                    <h3>Experiencia Offline</h3>
+                    <p>La app continúa funcionando sin conexión, sincronizando cuando se recupera la conexión.</p>
+                </div>
+                <div class="feature-card animate-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>Estadísticas y Reportes</h3>
+                    <p>Informes diarios, semanales y mensuales sobre ventas, ocupación y rendimiento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Details Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title animate-item">Detalles Técnicos</h2>
+            <div class="tech-details animate-item">
+                <div class="tech-category">
+                    <h3>Backend (Python/FastAPI)</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">FastAPI</span>
+                        <span class="tech-item">SQLAlchemy</span>
+                        <span class="tech-item">Pydantic</span>
+                        <span class="tech-item">JWT</span>
+                        <span class="tech-item">WebSockets</span>
+                        <span class="tech-item">Alembic</span>
+                        <span class="tech-item">PostgreSQL</span>
+                        <span class="tech-item">CORS</span>
+                        <span class="tech-item">Logging</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>Frontend (Kotlin/Android)</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">Kotlin</span>
+                        <span class="tech-item">MVVM</span>
+                        <span class="tech-item">LiveData</span>
+                        <span class="tech-item">ViewModel</span>
+                        <span class="tech-item">Retrofit</span>
+                        <span class="tech-item">Coroutines</span>
+                        <span class="tech-item">Room</span>
+                        <span class="tech-item">OkHttp</span>
+                        <span class="tech-item">Navigation</span>
+                        <span class="tech-item">Material Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Features Section -->
+    <section class="section light-section">
+        <div class="container">
+            <h2 class="section-title animate-item">Futuras Funcionalidades</h2>
+            <div class="future-features animate-item">
+                <div class="feature-roadmap">
+                    <div class="roadmap-item">
+                        <div class="roadmap-icon">🌐</div>
+                        <div class="roadmap-content">
+                            <h3>Versión Web</h3>
+                            <p>Desarrollo de una interfaz web con React para complementar la app móvil.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-icon">🧠</div>
+                        <div class="roadmap-content">
+                            <h3>Integración con IA</h3>
+                            <p>Sistema de recomendación basado en IA para sugerir platos y optimizar inventario.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-icon">🔊</div>
+                        <div class="roadmap-content">
+                            <h3>Notificaciones Push</h3>
+                            <p>Implementación de notificaciones push para alertas importantes.</p>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-icon">📱</div>
+                        <div class="roadmap-content">
+                            <h3>App para Clientes</h3>
+                            <p>Versión para clientes que permita realizar reservas y pedidos directamente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Raúl Jiménez | Backend Developer & AI Enthusiast</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/restaurant-details.js"></script>
+    <script src="../js/network-animation.js"></script>
+</body>
+</html> 
